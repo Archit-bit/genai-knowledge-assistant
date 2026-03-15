@@ -1,0 +1,17 @@
+[
+  {
+    "question": "How many remote days are allowed each week?",
+    "expected_answer": "Employees may work remotely up to three days per week with manager approval.",
+    "expected_sources": ["remote_work_policy.md"]
+  },
+  {
+    "question": "When is manager pre-approval required for an expense?",
+    "expected_answer": "Manager pre-approval is required for any single expense above $250.",
+    "expected_sources": ["expense_policy.md"]
+  },
+  {
+    "question": "How quickly should a suspected security incident be reported?",
+    "expected_answer": "Suspected security incidents must be reported within one hour of discovery.",
+    "expected_sources": ["security_policy.md"]
+  }
+]

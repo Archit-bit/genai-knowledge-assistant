@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genai-knowledge-assistant"
+version = "0.1.0"
+description = "A source-grounded Retrieval Augmented Generation assistant using OpenAI and FAISS."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "faiss-cpu>=1.8.0",
+  "numpy>=1.26.0,<3.0.0",
+  "openai>=1.30.0",
+  "python-dotenv>=1.0.0",
+  "pypdf>=5.0.0",
+  "streamlit>=1.55.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[project.scripts]
+rag-assistant = "app.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
