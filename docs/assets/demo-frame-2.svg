@@ -1,0 +1,21 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#F5EFE6"/>
+  <circle cx="1128" cy="122" r="98" fill="#DCE8E2"/>
+  <circle cx="152" cy="614" r="116" fill="#E8D3C5"/>
+  <text x="78" y="116" fill="#0F172A" font-family="Georgia, serif" font-size="54" font-weight="700">2. Ask a grounded question</text>
+  <text x="78" y="160" fill="#334155" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24">The assistant retrieves top-k chunks, answers from context, and cites the supporting source ids.</text>
+  <rect x="78" y="210" width="1124" height="428" rx="28" fill="#FFFDF8" stroke="#0F172A" stroke-width="3"/>
+  <rect x="118" y="252" width="1044" height="132" rx="24" fill="#0F172A"/>
+  <text x="152" y="302" fill="#94A3B8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Question</text>
+  <text x="152" y="346" fill="#FFFDF8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="30" font-weight="700">How quickly must a security incident be reported?</text>
+  <rect x="118" y="414" width="690" height="184" rx="24" fill="#FFF4ED" stroke="#E76F51" stroke-width="2"/>
+  <text x="148" y="462" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24" font-weight="700">Answer</text>
+  <text x="148" y="506" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24">Suspected security incidents must be reported within</text>
+  <text x="148" y="540" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24">one hour of discovery. [security_policy.md#chunk-0]</text>
+  <rect x="836" y="414" width="326" height="184" rx="24" fill="#EEF6F0" stroke="#2A9D8F" stroke-width="2"/>
+  <text x="864" y="462" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24" font-weight="700">Retrieved Chunks</text>
+  <text x="864" y="506" fill="#334155" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Rank 1 | score 0.4471</text>
+  <text x="864" y="538" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="19">security_policy.md#chunk-0</text>
+  <text x="864" y="572" fill="#334155" font-family="Trebuchet MS, Verdana, sans-serif" font-size="18">Rank 2 | score 0.0937</text>
+  <text x="864" y="600" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="18">expense_policy.md#chunk-0</text>
+</svg>

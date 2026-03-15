@@ -25,6 +25,7 @@ def main() -> None:
     )
     settings = Settings.from_env(project_root=PROJECT_ROOT)
     _ensure_session_state()
+    _apply_demo_bootstrap(settings)
 
     st.title("GenAI Knowledge Assistant")
     st.caption(
@@ -83,10 +84,9 @@ def _render_sidebar(settings: Settings) -> dict[str, object]:
                 embedding_model=embedding_model,
             )
 
-        index_ready = st.session_state.get("index_artifact") is not None
-        using_sample_docs = (
-            st.session_state.get("index_artifact", {}).get("corpus_source") == "sample"
-        )
+        artifact = st.session_state.get("index_artifact") or {}
+        index_ready = bool(artifact)
+        using_sample_docs = artifact.get("corpus_source") == "sample"
         if st.button(
             "Run Sample Evaluation",
             use_container_width=True,
@@ -339,6 +339,81 @@ def _ensure_session_state() -> None:
     st.session_state.setdefault("index_artifact", None)
     st.session_state.setdefault("last_result", None)
     st.session_state.setdefault("evaluation_report", None)
+    st.session_state.setdefault("demo_bootstrap_mode", None)
+
+
+def _apply_demo_bootstrap(settings: Settings) -> None:
+    demo_mode = st.query_params.get("demo")
+    if not demo_mode:
+        return
+
+    if st.session_state.get("demo_bootstrap_mode") == demo_mode:
+        return
+
+    if demo_mode == "showcase":
+        _bootstrap_demo_session(settings, include_evaluation=False)
+    elif demo_mode == "evaluation":
+        _bootstrap_demo_session(settings, include_evaluation=True)
+    else:
+        return
+
+    st.session_state["demo_bootstrap_mode"] = demo_mode
+
+
+def _bootstrap_demo_session(settings: Settings, include_evaluation: bool) -> None:
+    configured = settings.with_overrides(
+        embedding_backend="hashing",
+        generation_backend="extractive",
+        strict_grounding=True,
+        top_k=4,
+    )
+    chunks = load_and_chunk_documents(
+        documents_dir=settings.documents_dir,
+        chunk_size=configured.chunk_size,
+        chunk_overlap=configured.chunk_overlap,
+    )
+    embedder = build_embedder(configured, backend="hashing", model=None)
+    embeddings = embedder.embed_texts([chunk.text for chunk in chunks])
+    vector_store = FaissVectorStore.from_embeddings(chunks, embeddings)
+
+    index_dir = Path(tempfile.mkdtemp(prefix="rag_streamlit_demo_index_"))
+    vector_store.save(index_dir)
+    st.session_state["index_artifact"] = {
+        "index_dir": str(index_dir),
+        "embedding_backend": "hashing",
+        "embedding_model": None,
+        "source_label": "Bundled sample documents",
+        "corpus_source": "sample",
+        "document_count": len(sorted(path for path in settings.documents_dir.rglob('*') if path.is_file())),
+        "chunk_count": len(chunks),
+    }
+
+    pipeline = RAGPipeline(
+        embedder=embedder,
+        vector_store=vector_store,
+        generator=build_generator(configured, backend="extractive", model=None),
+        top_k=configured.top_k,
+        strict_grounding=configured.strict_grounding,
+    )
+    question = "How quickly must a security incident be reported?"
+    result = pipeline.ask(question)
+    st.session_state["messages"] = [
+        {
+            "role": "assistant",
+            "content": "Index ready for **Bundled sample documents**. Ask a question to inspect retrieval, citations, and grounding behavior.",
+        },
+        {"role": "user", "content": question},
+        {"role": "assistant", "content": result.answer},
+    ]
+    st.session_state["last_result"] = result
+
+    if include_evaluation:
+        st.session_state["evaluation_report"] = evaluate_examples(
+            pipeline,
+            load_examples(settings.evaluation_examples_path),
+        )
+    else:
+        st.session_state["evaluation_report"] = None
 
 
 if __name__ == "__main__":

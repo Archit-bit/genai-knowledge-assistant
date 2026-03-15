@@ -1,0 +1,21 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#F5EFE6"/>
+  <circle cx="174" cy="114" r="90" fill="#E6D2C3"/>
+  <circle cx="1122" cy="610" r="126" fill="#DDE8E2"/>
+  <text x="78" y="116" fill="#0F172A" font-family="Georgia, serif" font-size="54" font-weight="700">3. Show retrieval quality</text>
+  <text x="78" y="160" fill="#334155" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24">Run the bundled evaluation set to talk about answer relevance, retrieval hit rate, and reciprocal rank.</text>
+  <rect x="78" y="210" width="1124" height="428" rx="28" fill="#FFFDF8" stroke="#0F172A" stroke-width="3"/>
+  <rect x="118" y="252" width="314" height="138" rx="24" fill="#EAF2EC"/>
+  <text x="146" y="302" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Answer Token F1</text>
+  <text x="146" y="350" fill="#0F172A" font-family="Georgia, serif" font-size="46" font-weight="700">0.6348</text>
+  <rect x="482" y="252" width="314" height="138" rx="24" fill="#FEF0E7"/>
+  <text x="510" y="302" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Retrieval Hit Rate</text>
+  <text x="510" y="350" fill="#0F172A" font-family="Georgia, serif" font-size="46" font-weight="700">1.0000</text>
+  <rect x="846" y="252" width="314" height="138" rx="24" fill="#EAF0F7"/>
+  <text x="874" y="302" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Mean Reciprocal Rank</text>
+  <text x="874" y="350" fill="#0F172A" font-family="Georgia, serif" font-size="46" font-weight="700">1.0000</text>
+  <rect x="118" y="434" width="1042" height="164" rx="24" fill="#0F172A"/>
+  <text x="152" y="482" fill="#CBD5E1" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">What this demonstrates</text>
+  <text x="152" y="524" fill="#FFFDF8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="28" font-weight="700">The right documents were retrieved consistently, and the answer stayed grounded in source text.</text>
+  <text x="152" y="564" fill="#FCA5A5" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">This gives you a clean interview story: retrieval quality, hallucination control, and measurable evaluation.</text>
+</svg>

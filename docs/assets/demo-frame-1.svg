@@ -1,0 +1,29 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#F5EFE6"/>
+  <circle cx="145" cy="114" r="96" fill="#E7D5C9"/>
+  <circle cx="1136" cy="646" r="132" fill="#DCE8E2"/>
+  <text x="78" y="116" fill="#0F172A" font-family="Georgia, serif" font-size="54" font-weight="700">1. Index the corpus</text>
+  <text x="78" y="160" fill="#334155" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24">Load sample or uploaded docs, chunk them, create embeddings, and persist a FAISS index.</text>
+  <rect x="78" y="210" width="1124" height="428" rx="28" fill="#FFFDF8" stroke="#0F172A" stroke-width="3"/>
+  <rect x="120" y="258" width="276" height="332" rx="24" fill="#0F172A"/>
+  <text x="148" y="302" fill="#FFFDF8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="26" font-weight="700">Sidebar</text>
+  <rect x="148" y="332" width="220" height="48" rx="16" fill="#1E293B"/>
+  <text x="168" y="362" fill="#FFFDF8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Sample Documents</text>
+  <rect x="148" y="402" width="220" height="48" rx="16" fill="#1E293B"/>
+  <text x="168" y="432" fill="#FFFDF8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">hashing</text>
+  <rect x="148" y="472" width="220" height="56" rx="18" fill="#E76F51"/>
+  <text x="190" y="508" fill="#FFFDF8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="24" font-weight="700">Build Index</text>
+  <rect x="440" y="258" width="226" height="126" rx="22" fill="#EAF2EC"/>
+  <text x="468" y="308" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Documents</text>
+  <text x="468" y="350" fill="#0F172A" font-family="Georgia, serif" font-size="44" font-weight="700">3</text>
+  <rect x="690" y="258" width="226" height="126" rx="22" fill="#FEF0E7"/>
+  <text x="718" y="308" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Chunks</text>
+  <text x="718" y="350" fill="#0F172A" font-family="Georgia, serif" font-size="44" font-weight="700">3</text>
+  <rect x="940" y="258" width="220" height="126" rx="22" fill="#EAF0F7"/>
+  <text x="968" y="308" fill="#0F172A" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Backend</text>
+  <text x="968" y="350" fill="#0F172A" font-family="Georgia, serif" font-size="32" font-weight="700">FAISS</text>
+  <rect x="440" y="426" width="720" height="164" rx="24" fill="#0F172A"/>
+  <text x="474" y="474" fill="#CBD5E1" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Pipeline</text>
+  <text x="474" y="518" fill="#FFFDF8" font-family="Trebuchet MS, Verdana, sans-serif" font-size="28" font-weight="700">documents → chunks → embeddings → vector store</text>
+  <text x="474" y="558" fill="#FCA5A5" font-family="Trebuchet MS, Verdana, sans-serif" font-size="20">Artifacts saved for repeatable retrieval and evaluation.</text>
+</svg>
