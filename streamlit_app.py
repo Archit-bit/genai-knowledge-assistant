@@ -5,7 +5,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from app.config import Settings
+from app.config import Settings, default_embedding_model, default_generation_model
 from app.documents import load_and_chunk_documents
 from app.embeddings import build_embedder
 from app.evaluation import evaluate_examples, load_examples
@@ -54,26 +54,56 @@ def _render_sidebar(settings: Settings) -> dict[str, object]:
 
         st.divider()
         st.subheader("Retrieval")
-        embedding_backend = st.selectbox("Embedding Backend", ["hashing", "openai"], index=0)
+        embedding_options = ["hashing", "gemini", "openai"]
+        embedding_backend = st.selectbox(
+            "Embedding Backend",
+            embedding_options,
+            index=embedding_options.index(settings.embedding_backend)
+            if settings.embedding_backend in embedding_options
+            else 0,
+        )
         embedding_model = (
-            st.text_input("Embedding Model", value=settings.embedding_model)
-            if embedding_backend == "openai"
+            st.text_input(
+                "Embedding Model",
+                value=(
+                    settings.embedding_model
+                    if settings.embedding_backend == embedding_backend
+                    else default_embedding_model(embedding_backend)
+                ),
+            )
+            if embedding_backend in {"gemini", "openai"}
             else None
         )
 
         st.subheader("Generation")
-        generation_backend = st.selectbox("Generation Backend", ["extractive", "openai"], index=0)
+        generation_options = ["extractive", "gemini", "openai"]
+        generation_backend = st.selectbox(
+            "Generation Backend",
+            generation_options,
+            index=generation_options.index(settings.generation_backend)
+            if settings.generation_backend in generation_options
+            else 0,
+        )
         generation_model = (
-            st.text_input("Generation Model", value=settings.generation_model)
-            if generation_backend == "openai"
+            st.text_input(
+                "Generation Model",
+                value=(
+                    settings.generation_model
+                    if settings.generation_backend == generation_backend
+                    else default_generation_model(generation_backend)
+                ),
+            )
+            if generation_backend in {"gemini", "openai"}
             else None
         )
 
         top_k = st.slider("Top-K Retrieved Chunks", min_value=1, max_value=6, value=settings.top_k)
         strict_grounding = st.checkbox("Strict Grounding", value=settings.strict_grounding)
 
+        if (embedding_backend == "gemini" or generation_backend == "gemini") and not settings.gemini_api_key:
+            st.warning("GEMINI_API_KEY is not configured. Add it to `.env` or use `extractive` mode.")
         if (embedding_backend == "openai" or generation_backend == "openai") and not settings.openai_api_key:
-            st.warning("OPENAI_API_KEY is not configured. Use offline demo mode or add it to `.env`.")
+            st.warning("OPENAI_API_KEY is not configured. Use Gemini or `extractive` mode instead.")
 
         if st.button("Build Index", use_container_width=True):
             _handle_build_index(
@@ -100,7 +130,7 @@ def _render_sidebar(settings: Settings) -> dict[str, object]:
                 strict_grounding=strict_grounding,
             )
 
-        st.caption("Recommended live demo mode: `hashing` + `extractive`.")
+        st.caption("Recommended public demo mode: `hashing` + `gemini` or `hashing` + `extractive`.")
 
     return {
         "generation_backend": generation_backend,
@@ -332,7 +362,7 @@ def _ensure_session_state() -> None:
                 "role": "assistant",
                 "content": (
                     "Build an index from the sidebar. For a stable showcase, use "
-                    "**hashing** embeddings with **extractive** generation."
+                    "**hashing** embeddings with **gemini** generation, or use **extractive** for zero API usage."
                 ),
             }
         ]

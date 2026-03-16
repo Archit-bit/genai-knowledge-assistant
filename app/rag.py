@@ -3,10 +3,15 @@ from __future__ import annotations
 from collections.abc import Sequence
 import re
 
-from .config import Settings
+from .config import Settings, default_generation_model
 from .models import AnswerResult, RetrievedChunk
 from .prompting import SYSTEM_PROMPT, build_user_prompt
 from .validation import build_grounding_fallback, validate_citations, validate_question
+
+try:
+    from google import genai
+except ImportError:  # pragma: no cover - handled at runtime.
+    genai = None
 
 try:
     from openai import OpenAI
@@ -48,6 +53,39 @@ class OpenAIGenerator:
             ],
         )
         return response.output_text.strip()
+
+
+class GeminiGenerator:
+    backend = "gemini"
+
+    def __init__(self, api_key: str, model: str = "gemini-2.5-flash", temperature: float = 0.1):
+        if genai is None:
+            raise RuntimeError("google-genai is required to use the Gemini generator.")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY or GOOGLE_API_KEY is required for Gemini generation.")
+        self.client = genai.Client(api_key=api_key)
+        self.model = model
+        self.temperature = temperature
+
+    def generate(
+        self,
+        question: str,
+        retrieved_chunks: Sequence[RetrievedChunk],
+        system_prompt: str,
+        user_prompt: str,
+    ) -> str:
+        del question
+        del retrieved_chunks
+        prompt = f"{system_prompt}\n\n{user_prompt}"
+        response = self.client.models.generate_content(
+            model=self.model,
+            contents=prompt,
+            config={"temperature": self.temperature},
+        )
+        text = getattr(response, "text", None)
+        if text is None:
+            raise RuntimeError("Gemini generation response did not contain text output.")
+        return text.strip()
 
 
 class ExtractiveGenerator:
@@ -148,10 +186,17 @@ class RAGPipeline:
 
 def build_generator(settings: Settings, backend: str | None = None, model: str | None = None):
     selected_backend = (backend or settings.generation_backend).lower()
+    selected_model = model or settings.generation_model or default_generation_model(selected_backend)
+    if selected_backend == "gemini":
+        return GeminiGenerator(
+            api_key=settings.gemini_api_key or "",
+            model=selected_model,
+            temperature=settings.temperature,
+        )
     if selected_backend == "openai":
         return OpenAIGenerator(
             api_key=settings.openai_api_key or "",
-            model=model or settings.generation_model,
+            model=selected_model,
             temperature=settings.temperature,
         )
     if selected_backend == "extractive":
